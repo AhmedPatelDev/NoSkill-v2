@@ -1,0 +1,15 @@
+INDEX VERSION 1.131+D:\Workspaces\Work In Progress\NoSkillv2\.metadata\.plugins\org.eclipse.jdt.core
+1659044024.index
+4016061561.index
+1306819544.index
+3979741120.index
+373884090.index
+1865797976.index
+2455743236.index
+983206066.index
+3564370746.index
+3553938245.index
+2312004751.index
+1271166690.index
+965100055.index
+1182614825.index

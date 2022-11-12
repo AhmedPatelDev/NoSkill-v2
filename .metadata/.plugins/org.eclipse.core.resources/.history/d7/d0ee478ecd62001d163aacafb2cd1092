@@ -1,0 +1,9 @@
+package me.ix.noskillv2;
+
+public class NoSkillv2 {
+
+	public static void main(String[] args) {
+		
+	}
+	
+}
