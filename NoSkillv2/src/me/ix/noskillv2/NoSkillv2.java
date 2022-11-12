@@ -9,11 +9,14 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class NoSkillv2 {
 
-	private String TOKEN = "MTA0MTA5NjcwNDM1Njc4NjIzNg.GdRL41.ZmuazX7laErkSsmz0dyKBIDbdmkZjWdUgSS6IU";
 	private final ShardManager shardManager;
+	private final ConfigManager configManager;
 	
 	public NoSkillv2() throws LoginException {
-		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(TOKEN);
+		configManager = new ConfigManager();
+		String token = configManager.getToken();
+		
+		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
 		builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
 		builder.setActivity(Activity.watching("in development."));
 		builder.build();
@@ -29,7 +32,7 @@ public class NoSkillv2 {
 		try {
 			NoSkillv2 bot = new NoSkillv2();
 		} catch (LoginException e) {
-			System.out.println("ERROR: Invalid Token!");
+			Utils.log("ERROR: Invalid Token!");
 		}
 	}
 	

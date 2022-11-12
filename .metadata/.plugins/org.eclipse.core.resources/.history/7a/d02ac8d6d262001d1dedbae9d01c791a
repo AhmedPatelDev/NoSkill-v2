@@ -1,0 +1,18 @@
+package me.ix.noskillv2;
+
+import java.io.File;
+
+public class ConfigManager {
+
+	String path = "config.cfg";
+	File config_file;
+	
+	public ConfigManager() {
+		File config_file = new File(path);
+		
+		if(!config_file.exists()) {
+			System.out.println("");
+		}
+	}
+	
+}
