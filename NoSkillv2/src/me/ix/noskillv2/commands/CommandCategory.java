@@ -2,13 +2,11 @@ package me.ix.noskillv2.commands;
 
 public enum CommandCategory {
 
-	MISC(":gear:"),
-	MUSIC(":musical_note:"),
-	FUN(":game_die:"),
-	NSFW(":wink:"),
-	TARKOV(":gun:"),
-	MOD(":tools:"),
-	BITCOIN(":coin:");
+	FUN(":gear:"),
+	GAME(":musical_note:"),
+	MISC(":game_die:"),
+	MOD(":wink:"),
+	MUSIC(":gun:");
 
     public final String label;
 

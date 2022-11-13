@@ -3,6 +3,7 @@ package me.ix.noskillv2;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.utils.Utils;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
@@ -18,7 +19,9 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class Listener extends ListenerAdapter {
-
+	
+	private final CommandManager manager = new CommandManager();
+	
 	@Override
 	public void onReady(ReadyEvent event) {
 		Utils.log(event.getJDA().getSelfUser().getName() + " is ready");
@@ -26,17 +29,17 @@ public class Listener extends ListenerAdapter {
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
+		String message = event.getMessage().getContentRaw();
+		String prefixReceived = message.substring(0, 1);
 		
+		if(prefixReceived.equals("-")) {
+			manager.handle(event);
+		}
 	}
 	
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-		String command = event.getName();
-		
-		if(command.equals("say")) {
-			String message = event.getOption("message").getAsString();
-			event.reply(message).setEphemeral(true).queue();
-		}
+		manager.handle(event);
 	}
 	
 	@Override
@@ -52,9 +55,9 @@ public class Listener extends ListenerAdapter {
 	public void addCommandData(Event event) {
 		List<CommandData> commandData = new ArrayList<CommandData>();
 
-		commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(
-				new OptionData(OptionType.STRING, "message", "What the bot will say.", true)
-		));
+		for(ICommand cmd : manager.getCommands()) {
+			commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()).addOptions(cmd.getArguments()));
+		}
 		
 		((GenericGuildEvent) event).getGuild().updateCommands().addCommands(commandData).queue();
 	}
