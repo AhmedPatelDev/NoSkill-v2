@@ -1,4 +1,4 @@
-package me.ix.noskillv2;
+package me.ix.noskillv2.utils;
 
 public class Utils {
 

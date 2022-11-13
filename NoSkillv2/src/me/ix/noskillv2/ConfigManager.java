@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import me.ix.noskillv2.utils.Utils;
+
 public class ConfigManager {
 
 	String[] keys = { "TOKEN", "STATUS" };
@@ -71,9 +73,5 @@ public class ConfigManager {
 			System.exit(0);
 		}
 		return null;
-	}
-
-	public String getToken() {
-		return getValueFromConfig("TOKEN");
 	}
 }
