@@ -1,17 +1,14 @@
 package me.ix.noskillv2.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public interface ICommand {
 
-	void handle(MessageReceivedEvent event);
-	void handle(SlashCommandInteractionEvent event);
+	public void execute(CommandContext ctx, ArrayList<String> arguments);
 	
 	String getName();
 	

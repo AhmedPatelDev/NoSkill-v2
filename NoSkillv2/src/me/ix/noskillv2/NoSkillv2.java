@@ -14,6 +14,8 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class NoSkillv2 {
 
+	public static String DEFAULT_PREFIX = "-";
+	
 	private final ShardManager shardManager;
 	private final ConfigManager configManager;
 

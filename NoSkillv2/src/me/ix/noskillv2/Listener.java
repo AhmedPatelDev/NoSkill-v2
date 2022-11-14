@@ -13,10 +13,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class Listener extends ListenerAdapter {
 	
@@ -30,6 +28,14 @@ public class Listener extends ListenerAdapter {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		String message = event.getMessage().getContentRaw();
+		
+		if(!message.contains(NoSkillv2.DEFAULT_PREFIX)) {
+			return;
+		}
+		if(event.getAuthor().isBot()) {
+			return;
+		}
+		
 		String prefixReceived = message.substring(0, 1);
 		
 		if(prefixReceived.equals("-")) {
