@@ -20,6 +20,10 @@ public class Listener extends ListenerAdapter {
 	
 	private final CommandManager manager = new CommandManager();
 	
+	public CommandManager getManager() {
+		return manager;
+	}
+	
 	@Override
 	public void onReady(ReadyEvent event) {
 		Utils.log(event.getJDA().getSelfUser().getName() + " is ready");

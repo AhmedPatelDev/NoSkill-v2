@@ -1,8 +1,11 @@
 package me.ix.noskillv2;
 
+import java.util.ArrayList;
+
 import javax.security.auth.login.LoginException;
 
 import me.ix.noskillv2.utils.Utils;
+import me.ix.noskillv2.utils.webserver.WebServer;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -19,6 +22,8 @@ public class NoSkillv2 {
 	private final ShardManager shardManager;
 	private final ConfigManager configManager;
 
+	public static final ArrayList<String> commandsExecuted = new ArrayList<String>();
+	
 	public NoSkillv2() throws LoginException {
 		configManager = new ConfigManager();
 		String token = configManager.getValueFromConfig("TOKEN");
@@ -40,7 +45,11 @@ public class NoSkillv2 {
 
 		shardManager = builder.build();
 
-		shardManager.addEventListener(new Listener());
+		Listener listener = new Listener();
+		shardManager.addEventListener(listener);
+		
+		WebServer ws = new WebServer(690, listener.getManager(), shardManager);
+		ws.start();
 	}
 
 	public ShardManager getShardManager() {

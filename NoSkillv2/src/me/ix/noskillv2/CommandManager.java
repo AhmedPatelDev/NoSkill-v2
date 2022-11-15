@@ -57,11 +57,11 @@ public class CommandManager {
 		addCommand(new JoinCommand());
 		addCommand(new LeaveCommand());
 		addCommand(new NowPlayingCommand());
-		addCommand(new PauseCommand());
 		addCommand(new PlayCommand());
 		addCommand(new QueueCommand());
 		addCommand(new SkipCommand());
 		addCommand(new StopCommand());
+		//addCommand(new PauseCommand()); (removed due to complications with required args)
 	}
 
 	@SuppressWarnings("unused")
@@ -97,12 +97,17 @@ public class CommandManager {
 			SlashCommandInteractionEvent event = (SlashCommandInteractionEvent) e;
 			String command = event.getName();
 			ICommand cmd = this.getCommand(command);
-
+			
 			if (cmd != null) {
 				event.getChannel().sendTyping().queue();
 
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
+				NoSkillv2.commandsExecuted.add(
+						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getUser().getAsTag() + "]</span>" +
+						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
+				);
+				
 				CommandContext ctx = new CommandContext(event);
 				
 				cmd.execute(ctx, arguments);
@@ -118,17 +123,27 @@ public class CommandManager {
 			if (cmd != null) {
 				event.getChannel().sendTyping().queue();
 
-				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
-
-				// Only bypass this check with the play command as it uses every arg for the search
-				if (cmd.getName() != "play" && (arguments.size() != cmd.getArguments().size())) {
-					event.getMessage().reply("Incorrect arguments. Use `" + NoSkillv2.DEFAULT_PREFIX + "help " + cmd.getName() + "`").queue();
-					return;
-				}
-
 				CommandContext ctx = new CommandContext(event);
 				
-				cmd.execute(ctx, arguments);
+				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
+
+				NoSkillv2.commandsExecuted.add(
+						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getAuthor().getAsTag() + "] </span>" +
+						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
+				);
+				
+				// Check for commands where loose arguments are used.
+				if(cmd.getName() == "play") {
+					cmd.execute(ctx, arguments);
+				} else {
+					if(cmd.getArguments() != null) {
+						if(arguments.size() != cmd.getArguments().size()) {
+							event.getMessage().reply("Incorrect arguments. Use `" + NoSkillv2.DEFAULT_PREFIX + "help " + cmd.getName() + "`").queue();
+							return;
+						}
+					}
+					cmd.execute(ctx, arguments);
+				}
 			}
 		}
 	}
