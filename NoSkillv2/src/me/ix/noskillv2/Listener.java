@@ -27,6 +27,18 @@ public class Listener extends ListenerAdapter {
 	@Override
 	public void onReady(ReadyEvent event) {
 		Utils.log(event.getJDA().getSelfUser().getName() + " is ready");
+		
+		List<CommandData> commandData = new ArrayList<CommandData>();
+
+		for(ICommand cmd : manager.getCommands()) {
+			if(cmd.getArguments() != null) {
+				commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()).addOptions(cmd.getArguments()));
+			} else {
+				commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()));
+			}
+		}
+		
+		event.getJDA().updateCommands().addCommands(commandData).queue();
 	}
 	
 	@Override
@@ -54,12 +66,12 @@ public class Listener extends ListenerAdapter {
 	
 	@Override
 	public void onGuildReady(GuildReadyEvent event) {
-		addCommandData(event);
+		//addCommandData(event);
 	}
 	
 	@Override
 	public void onGuildJoin(GuildJoinEvent event) {
-		addCommandData(event);
+		//addCommandData(event);
 	}
 	
 	public void addCommandData(Event event) {
