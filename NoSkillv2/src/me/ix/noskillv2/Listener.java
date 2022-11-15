@@ -62,7 +62,11 @@ public class Listener extends ListenerAdapter {
 		List<CommandData> commandData = new ArrayList<CommandData>();
 
 		for(ICommand cmd : manager.getCommands()) {
-			commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()).addOptions(cmd.getArguments()));
+			if(cmd.getArguments() != null) {
+				commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()).addOptions(cmd.getArguments()));
+			} else {
+				commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()));
+			}
 		}
 		
 		((GenericGuildEvent) event).getGuild().updateCommands().addCommands(commandData).queue();

@@ -16,6 +16,7 @@ import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -55,6 +56,10 @@ public class PlayCommand implements ICommand {
         final Channel channel = ctx.getChannel();
         
         PlayerManager.getInstance().loadAndPlay((TextChannel) channel, link);
+        
+        if(ctx.getEvent() instanceof SlashCommandInteractionEvent) {
+        	((SlashCommandInteractionEvent) ctx.getEvent()).reply("Sent your song to queue.").setEphemeral(true).queue();
+        }
 	}
 
 	@Override
@@ -64,7 +69,7 @@ public class PlayCommand implements ICommand {
 
 	@Override
 	public String getHelp() {
-		return "Plays a song using a youtube link";
+		return "Plays a song using a youtube link.";
 	}
 	
 	@Override
