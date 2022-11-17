@@ -1,10 +1,13 @@
 package me.ix.noskillv2;
 
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.security.auth.login.LoginException;
 
 import me.ix.noskillv2.utils.Utils;
+import me.ix.noskillv2.utils.database.SQLiteDataSource;
+import me.ix.noskillv2.utils.database.repo.InitializeTables;
 import me.ix.noskillv2.utils.webserver.WebServer;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -21,10 +24,9 @@ public class NoSkillv2 {
 	
 	private final ShardManager shardManager;
 	private final ConfigManager configManager;
-
-	public static final ArrayList<String> commandsExecuted = new ArrayList<String>();
+	private final Connection sqlConnection;
 	
-	public NoSkillv2() throws LoginException {
+	public NoSkillv2() throws LoginException, SQLException {
 		configManager = new ConfigManager();
 		String token = configManager.getValueFromConfig("TOKEN");
 
@@ -50,6 +52,10 @@ public class NoSkillv2 {
 		
 		WebServer ws = new WebServer(690, listener.getManager(), shardManager);
 		ws.start();
+		
+		SQLiteDataSource ds = new SQLiteDataSource();
+		sqlConnection = ds.getConnection();
+		InitializeTables.setupPrefixTable(sqlConnection);
 	}
 
 	public ShardManager getShardManager() {
@@ -60,11 +66,17 @@ public class NoSkillv2 {
 		return configManager;
 	}
 
+	public Connection getSqlConnection() {
+		return sqlConnection;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			NoSkillv2 bot = new NoSkillv2();
 		} catch (LoginException e) {
 			Utils.log("ERROR: Invalid Token!");
+		} catch (SQLException e) {
+			Utils.log("ERROR: Issue occurred with SQL Connection!");
 		}
 	}
 

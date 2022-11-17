@@ -34,6 +34,8 @@ public class CommandManager {
 
 	private final List<ICommand> commands = new ArrayList<>();
 
+	public final ArrayList<String> commandsExecuted = new ArrayList<String>();
+	
 	public CommandManager() {
 		/* FUN */
 		addCommand(new RedditCommand());
@@ -103,7 +105,7 @@ public class CommandManager {
 
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				NoSkillv2.commandsExecuted.add(
+				commandsExecuted.add(
 						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getUser().getAsTag() + "]</span>" +
 						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
 				);
@@ -127,7 +129,7 @@ public class CommandManager {
 				
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				NoSkillv2.commandsExecuted.add(
+				commandsExecuted.add(
 						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getAuthor().getAsTag() + "] </span>" +
 						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
 				);

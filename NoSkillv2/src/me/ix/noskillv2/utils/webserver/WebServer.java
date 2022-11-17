@@ -71,7 +71,7 @@ public class WebServer extends Thread {
 	public String getExecutedCommands() {
 		String html = "<ul>";
 
-		for (String cmdE : NoSkillv2.commandsExecuted) {
+		for (String cmdE : mgr.commandsExecuted) {
 			html += "<li>" + cmdE + "</li>";
 		}
 

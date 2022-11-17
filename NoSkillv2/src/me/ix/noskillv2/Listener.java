@@ -66,12 +66,12 @@ public class Listener extends ListenerAdapter {
 	
 	@Override
 	public void onGuildReady(GuildReadyEvent event) {
-		//addCommandData(event);
+		event.getGuild().updateCommands().queue();
 	}
 	
 	@Override
 	public void onGuildJoin(GuildJoinEvent event) {
-		//addCommandData(event);
+		event.getGuild().updateCommands().queue();
 	}
 	
 	public void addCommandData(Event event) {
