@@ -2,6 +2,8 @@ package me.ix.noskillv2;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.security.auth.login.LoginException;
 
@@ -21,10 +23,13 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 public class NoSkillv2 {
 
 	public static String DEFAULT_PREFIX = "-";
+	public static final Map<Long, String> PREFIXES = new HashMap<>();
 	
 	private final ShardManager shardManager;
 	private final ConfigManager configManager;
 	private final Connection sqlConnection;
+	
+	public static NoSkillv2 bot;
 	
 	public NoSkillv2() throws LoginException, SQLException {
 		configManager = new ConfigManager();
@@ -72,7 +77,7 @@ public class NoSkillv2 {
 	
 	public static void main(String[] args) {
 		try {
-			NoSkillv2 bot = new NoSkillv2();
+			bot = new NoSkillv2();
 		} catch (LoginException e) {
 			Utils.log("ERROR: Invalid Token!");
 		} catch (SQLException e) {

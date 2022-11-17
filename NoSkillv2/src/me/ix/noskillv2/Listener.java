@@ -5,6 +5,7 @@ import java.util.List;
 
 import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.utils.Utils;
+import me.ix.noskillv2.utils.database.repo.GuildRepo;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -45,17 +46,22 @@ public class Listener extends ListenerAdapter {
 	public void onMessageReceived(MessageReceivedEvent event) {
 		String message = event.getMessage().getContentRaw();
 		
-		if(!message.contains(NoSkillv2.DEFAULT_PREFIX)) {
-			return;
-		}
 		if(event.getAuthor().isBot()) {
 			return;
 		}
 		
-		String prefixReceived = message.substring(0, 1);
+		String guildPrefix = GuildRepo.getPrefix(event.getGuild().getIdLong());
 		
-		if(prefixReceived.equals("-")) {
+		if(message.length() < guildPrefix.length()) {
+			return;
+		}
+		
+		String prefixReceived = message.substring(0, guildPrefix.length());
+		
+		if(prefixReceived.trim().equals(guildPrefix.trim())) {
 			manager.handle(event);
+		} else {
+			System.out.println(guildPrefix + " did not match " + prefixReceived);
 		}
 	}
 	
