@@ -26,6 +26,7 @@ import me.ix.noskillv2.commands.categories.music.QueueCommand;
 import me.ix.noskillv2.commands.categories.music.SkipCommand;
 import me.ix.noskillv2.commands.categories.music.StopCommand;
 import me.ix.noskillv2.utils.Utils;
+import me.ix.noskillv2.utils.database.repo.GuildRepo;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -117,10 +118,12 @@ public class CommandManager {
 		}
 		if (e instanceof MessageReceivedEvent) {
 			MessageReceivedEvent event = (MessageReceivedEvent) e;
+			String guildPrefix = GuildRepo.getPrefix(event.getGuild().getIdLong());
+			
 			String message = event.getMessage().getContentRaw();
 			String command = message.split(" ")[0];
-			String commandClean = command.substring(1, command.length());
-
+			String commandClean = command.substring(guildPrefix.length(), command.length());
+			
 			ICommand cmd = this.getCommand(commandClean);
 			if (cmd != null) {
 				event.getChannel().sendTyping().queue();
