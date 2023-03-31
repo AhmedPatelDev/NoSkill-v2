@@ -3,19 +3,23 @@ package me.ix.noskillv2;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.database.repo.GuildRepo;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 public class Listener extends ListenerAdapter {
 	
@@ -58,16 +62,26 @@ public class Listener extends ListenerAdapter {
 		
 		String prefixReceived = message.substring(0, guildPrefix.length());
 		
+		if (!event.getMessage().getMentions().getMembers().isEmpty()) {
+			if (event.getMessage().getMentions().getMembers().get(0).getIdLong() == event.getGuild().getSelfMember().getIdLong()) {
+				event.getChannel().sendMessage("My prefix in this discord is: " + guildPrefix + "\nUse `" + guildPrefix
+						+ "help` to get a list of commands").queue();
+			}
+		}
+		
 		if(prefixReceived.trim().equals(guildPrefix.trim())) {
 			manager.handle(event);
-		} else {
-			System.out.println(guildPrefix + " did not match " + prefixReceived);
 		}
 	}
 	
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 		manager.handle(event);
+	}
+	
+	@Override
+	public void onStringSelectInteraction(StringSelectInteractionEvent event) {
+		
 	}
 	
 	@Override

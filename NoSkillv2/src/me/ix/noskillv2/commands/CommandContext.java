@@ -1,5 +1,9 @@
 package me.ix.noskillv2.commands;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -8,6 +12,8 @@ import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 public class CommandContext {
 
@@ -23,6 +29,28 @@ public class CommandContext {
 	
 	public JDA getJDA() {
 		return e.getJDA();
+	}
+	
+	public List<Member> getMentionedMembers() {
+		ArrayList<Member> members = new ArrayList<Member>();
+		
+		if (e instanceof SlashCommandInteractionEvent) {
+			SlashCommandInteractionEvent event = (SlashCommandInteractionEvent) e;
+			for(OptionMapping option : event.getOptions()) {
+				if(option.getType() == OptionType.USER) {
+					members.add(option.getAsMember());
+				}
+			}
+			
+		}
+		if(e instanceof MessageReceivedEvent) {
+			MessageReceivedEvent event = (MessageReceivedEvent) e;
+			
+			for(Member member : event.getMessage().getMentions().getMembers()) {
+				members.add(member);
+			}
+		}
+		return members;
 	}
 	
 	public Member getMember() {
@@ -55,6 +83,7 @@ public class CommandContext {
 		return null;
 	}
 	
+	
 	public void sendMessage(String message, MessageEmbed embed) {
 		if(e instanceof MessageReceivedEvent) {
 			if(embed == null) {
@@ -80,4 +109,6 @@ public class CommandContext {
 			((SlashCommandInteractionEvent) e).reply(message).queue();
 		}
 	}
+	
+
 }

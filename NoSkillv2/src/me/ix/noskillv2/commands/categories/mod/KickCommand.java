@@ -6,6 +6,7 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -13,7 +14,10 @@ public class KickCommand implements ICommand {
 
 	@Override
 	public void execute(CommandContext ctx, ArrayList<String> arguments) {
-		
+		List<Member> mentionedMembers = ctx.getMentionedMembers();
+		Member executor = ctx.getMember();
+		Member target = mentionedMembers.get(0);
+		Member selfUser = ctx.getGuild().getSelfMember();
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class KickCommand implements ICommand {
 		List<OptionData> optionData = new ArrayList<OptionData>();
 
 		optionData.add(
-				new OptionData(OptionType.STRING, "user", "what user to kick", true)
+				new OptionData(OptionType.USER, "user", "what user to kick", true)
 		);
 		
 		return optionData;

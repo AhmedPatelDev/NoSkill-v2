@@ -37,7 +37,7 @@ public class PlayCommand implements ICommand {
         
         if(track != null && audioPlayer.isPaused()) {
 			audioPlayer.setPaused(false);
-			ctx.sendMessage("Resumed `track.getInfo().title`");
+			ctx.sendMessage("Resumed " + track.getInfo().title);
 			return;
 		}
         

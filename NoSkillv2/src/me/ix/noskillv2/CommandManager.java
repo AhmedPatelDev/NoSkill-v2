@@ -47,13 +47,13 @@ public class CommandManager {
 		addCommand(new SayCommand());
 
 		/* MOD */
-		addCommand(new BackupCommand());
-		addCommand(new BanCommand());
 		addCommand(new CleanCommand());
-		addCommand(new KickCommand());
 		addCommand(new SetPrefixCommand());
-		addCommand(new ShutdownCommand());
-		addCommand(new UnbanCommand());
+		//addCommand(new BackupCommand());
+		//addCommand(new BanCommand());
+		//addCommand(new KickCommand());
+		//addCommand(new ShutdownCommand());
+		//addCommand(new UnbanCommand());
 		
 		/* MUSIC */
 		addCommand(new ClearCommand());

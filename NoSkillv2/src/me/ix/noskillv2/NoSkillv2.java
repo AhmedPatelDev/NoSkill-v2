@@ -84,5 +84,5 @@ public class NoSkillv2 {
 			Utils.log("ERROR: Issue occurred with SQL Connection!");
 		}
 	}
-
+	
 }

@@ -25,9 +25,9 @@
 	<dependencies>
 		<!-- JDA -->
 		<dependency>
-			<groupId>net.dv8tion</groupId>
-			<artifactId>JDA</artifactId>
-			<version>5.0.0-alpha.22</version>
+		    <groupId>net.dv8tion</groupId>
+		    <artifactId>JDA</artifactId>
+		    <version>5.0.0-beta.6</version>
 		</dependency>
 
 		<!-- GSON -->

@@ -44,33 +44,34 @@ public class TrackScheduler extends AudioEventAdapter {
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
 		if (endReason.mayStartNext) {
 			if (queue.isEmpty()) {
-				TimerTask task = new TimerTask(){
-				    public void run(){
-				    	if(queue.isEmpty() && player.getPlayingTrack() == null) {
-				    		PlayerManager.getInstance().play(guild, "https://www.youtube.com/watch?v=umqA5IMx_2I");
-				    		
-				    		TimerTask task = new TimerTask(){
-							    public void run(){
-							        AudioManager audioManager = guild.getAudioManager();
-							        audioManager.closeAudioConnection(); 
-							    }
-							};
-							Timer timer = new Timer();
-							timer.schedule(task, 3*1000);
-				    	}
-				    }
-				};
-				Timer timer = new Timer();
-				timer.schedule(task, 60*1000);
+				handleLeave();
 			} else {
 				nextTrack();
 			}
 		}
 	}
 	
+	public void handleLeave() {
+		TimerTask task = new TimerTask(){
+		    public void run(){
+		    	if(queue.isEmpty() && player.getPlayingTrack() == null) {
+		    		PlayerManager.getInstance().play(guild, "https://www.youtube.com/watch?v=umqA5IMx_2I");
+		    		
+		    		TimerTask task = new TimerTask(){
+					    public void run(){
+					        AudioManager audioManager = guild.getAudioManager();
+					        queue.clear();
+					        audioManager.closeAudioConnection(); 
+					    }
+					};
+					Timer timer = new Timer();
+					timer.schedule(task, 3*1000);
+		    	}
+		    }
+		};
+		Timer timer = new Timer();
+		timer.schedule(task, 60*1000);
+	}
 	
-	/*
-	 * 
-	 * 
-	 */
+	
 }

@@ -145,6 +145,7 @@ public class WebServer extends Thread {
 			}
 		} catch (Exception e) {
 			Utils.log("Exception occurred on webserver thread");
+			e.printStackTrace();
 		}
 	}
 }
