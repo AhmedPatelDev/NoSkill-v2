@@ -12,14 +12,12 @@ import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class ClearCommand implements ICommand {
 
 	@Override
 	public void execute(CommandContext ctx, ArrayList<String> arguments) {
-		final TextChannel channel = (TextChannel) ctx.getChannel();
         final Member self = ctx.getGuild().getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
         

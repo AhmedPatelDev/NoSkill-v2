@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
-import me.ix.noskillv2.NoSkillv2;
-import me.ix.noskillv2.utils.database.repo.InitializeTables;
 
 public class SQLiteDataSource {
 

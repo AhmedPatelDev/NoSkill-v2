@@ -1,22 +1,12 @@
 package me.ix.noskillv2.commands.categories.fun;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class AnimeAI implements ICommand {

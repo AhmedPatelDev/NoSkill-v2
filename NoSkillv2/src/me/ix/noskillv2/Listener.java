@@ -3,11 +3,9 @@ package me.ix.noskillv2;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.database.repo.GuildRepo;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -19,7 +17,6 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 public class Listener extends ListenerAdapter {
 	

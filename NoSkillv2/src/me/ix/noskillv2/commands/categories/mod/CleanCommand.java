@@ -6,7 +6,6 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
-import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.database.repo.GuildRepo;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;

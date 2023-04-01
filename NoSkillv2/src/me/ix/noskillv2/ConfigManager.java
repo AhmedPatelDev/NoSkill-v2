@@ -53,15 +53,16 @@ public class ConfigManager {
 
 	public String getValueFromConfig(String key) {
 		try {
-			Scanner reader = new Scanner(config_file);
-			while (reader.hasNextLine()) {
-				String line = reader.nextLine();
+			try (Scanner reader = new Scanner(config_file)) {
+				while (reader.hasNextLine()) {
+					String line = reader.nextLine();
 
-				if (line.contains("=")) {
-					String[] lineArr = line.split("=");
+					if (line.contains("=")) {
+						String[] lineArr = line.split("=");
 
-					if (lineArr[0].contains("[" + key + "]")) {
-						return lineArr[1];
+						if (lineArr[0].contains("[" + key + "]")) {
+							return lineArr[1];
+						}
 					}
 				}
 			}

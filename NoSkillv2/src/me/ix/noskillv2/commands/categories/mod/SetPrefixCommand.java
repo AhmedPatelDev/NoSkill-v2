@@ -3,7 +3,6 @@ package me.ix.noskillv2.commands.categories.mod;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ix.noskillv2.NoSkillv2;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;

@@ -6,7 +6,6 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
-import me.ix.noskillv2.utils.Utils;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
