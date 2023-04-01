@@ -1,5 +1,6 @@
 package me.ix.noskillv2;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import javax.security.auth.login.LoginException;
 import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.database.SQLiteDataSource;
 import me.ix.noskillv2.utils.database.repo.InitializeTables;
-import me.ix.noskillv2.utils.webserver.WebServer;
+import me.ix.noskillv2.utils.webserver.WebServerWrapper;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -31,7 +32,9 @@ public class NoSkillv2 {
 	
 	public static NoSkillv2 bot;
 	
-	public NoSkillv2() throws LoginException, SQLException {
+	public static WebServerWrapper webServer;
+	
+	public NoSkillv2() throws LoginException, SQLException, IOException {
 		configManager = new ConfigManager();
 		String token = configManager.getValueFromConfig("TOKEN");
 
@@ -55,8 +58,7 @@ public class NoSkillv2 {
 		Listener listener = new Listener();
 		shardManager.addEventListener(listener);
 		
-		WebServer ws = new WebServer(690, listener.getManager(), shardManager);
-		ws.start();
+		webServer = new WebServerWrapper(690, 1000);
 		
 		SQLiteDataSource ds = new SQLiteDataSource();
 		sqlConnection = ds.getConnection();
@@ -82,6 +84,8 @@ public class NoSkillv2 {
 			Utils.log("ERROR: Invalid Token!");
 		} catch (SQLException e) {
 			Utils.log("ERROR: Issue occurred with SQL Connection!");
+		} catch (IOException e) {
+			Utils.log("ERROR: Issue occurred with Web Server!");
 		}
 	}
 	

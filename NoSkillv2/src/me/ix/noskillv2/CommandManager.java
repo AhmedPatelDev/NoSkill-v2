@@ -34,8 +34,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CommandManager {
 
 	private final List<ICommand> commands = new ArrayList<>();
-
-	public final ArrayList<String> commandsExecuted = new ArrayList<String>();
 	
 	public CommandManager() {
 		/* FUN */
@@ -94,7 +92,7 @@ public class CommandManager {
 
 		return null;
 	}
-
+	
 	public void handle(Event e) {
 		if (e instanceof SlashCommandInteractionEvent) {
 			SlashCommandInteractionEvent event = (SlashCommandInteractionEvent) e;
@@ -106,10 +104,7 @@ public class CommandManager {
 
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				commandsExecuted.add(
-						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getUser().getAsTag() + "]</span>" +
-						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
-				);
+				NoSkillv2.webServer.addCommandRow(event.getUser().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
 				
 				CommandContext ctx = new CommandContext(event);
 				
@@ -132,10 +127,7 @@ public class CommandManager {
 				
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				commandsExecuted.add(
-						"<span style=\"color: orange; font-weight: bold; margin-right: 5px; \">[" + event.getAuthor().getAsTag() + "] </span>" +
-						"<span style=\"color: white;\">" + cmd.getName() + " " + arguments.toString() + " in " + event.getGuild().getName() + "</span>"
-				);
+				NoSkillv2.webServer.addCommandRow(event.getAuthor().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
 				
 				// Check for commands where loose arguments are used.
 				if(cmd.getName() == "play") {

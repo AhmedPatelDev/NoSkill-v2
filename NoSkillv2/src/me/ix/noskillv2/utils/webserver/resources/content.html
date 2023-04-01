@@ -1,0 +1,35 @@
+<div style="outline: 15px solid white; display: flex; justify-content: space-between; margin: 0; padding:0; height: 50px; background-color: #800080;">
+    <div style="display: flex;">
+        <img style="width: 50px; height: 50px;" src="{logosrc}" alt="Logo" />
+        <h1 style="text-align: center; margin: 0; padding:5px; color: white;">{title}</h1>
+    </div>
+    <h1 id="time" style="margin: 0; padding:5px; color: white;">{time}</h1>
+</div>
+
+<div style="position: absolute; top: 50px; bottom: 0; left: 0; right: 0; background-color: black;">
+    <div style="display: flex; height: 100%;">
+    
+        <div style="flex: 1;">
+            <div id="commands-container" style="margin: 2.5vh; height: calc(100% - 5vh); overflow-y: auto;">
+                <div style="margin: 0 auto; width: 100%; text-align: center; background-color: rgba(0, 0, 0, 0.3); border-radius: 5px;">
+                    <h2 style="color: white;">- Commands Executed -</h2>
+                    <hr />
+                    {commandsRows}
+                </div>
+            </div>
+        </div>
+        
+        <div style="width: 0.2vw; background-color: white;"></div>
+        
+        <div style="flex: 1;">
+            <div id="info-container" style="margin: 2.5vh; height: calc(100% - 5vh); overflow-y: auto;">
+                <div style="margin: 0 auto; width: 100%; text-align: center; background-color: rgba(0, 0, 0, 0.3); border-radius: 5px;">
+                    <h2 style="color: white;">- Bot Information -</h2>
+                    <hr />
+                    {infoRows}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

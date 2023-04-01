@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Web Server</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+          {customCSS}
+        </style>
+        <script>
+          $(document).ready(function() {
+            function getContent() {
+              $.getJSON('/content', function(data) {
+                $('#content').html(data.content);
+              });
+            }
+            getContent();
+            setInterval(getContent, {delay});
+          });
+        </script>
+    </head>
+<body>
+    <div id="content"></div>
+</body>
+</html>
