@@ -11,8 +11,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.lavaplayer.GuildMusicManager;
 import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
@@ -29,6 +31,8 @@ public class PlayCommand implements ICommand {
         final AudioPlayer audioPlayer = musicManager.audioPlayer;
         final AudioTrack track = audioPlayer.getPlayingTrack();
         
+        EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+        
         String link = String.join(" ", arguments);
         
         if(!isUrl(link)) {
@@ -37,12 +41,14 @@ public class PlayCommand implements ICommand {
         
         if(track != null && audioPlayer.isPaused()) {
 			audioPlayer.setPaused(false);
-			ctx.sendMessage("Resumed " + track.getInfo().title);
+        	eb.addField("Play Info", "Resumed " + track.getInfo().title, false);
+        	ctx.sendMessage("", eb.build());
 			return;
 		}
         
         if (!ctx.getMember().getVoiceState().inAudioChannel()) {
-        	ctx.sendMessage("You need to be in a voice channel for this command to work");
+        	eb.addField("Play Info", "You need to be in a voice channel for this command to work", false);
+        	ctx.sendMessage("", eb.build());
             return;
         }
         
@@ -57,9 +63,8 @@ public class PlayCommand implements ICommand {
         
         PlayerManager.getInstance().loadAndPlay((TextChannel) channel, link);
         
-        if(ctx.getEvent() instanceof SlashCommandInteractionEvent) {
-        	((SlashCommandInteractionEvent) ctx.getEvent()).reply("Sent your song to queue.").setEphemeral(true).queue();
-        }
+    	eb.addField("Play Info", "Sent your song to queue.", false);
+    	ctx.sendMessage("", eb.build());
 	}
 
 	@Override

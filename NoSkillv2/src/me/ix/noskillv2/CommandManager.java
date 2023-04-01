@@ -8,19 +8,14 @@ import org.jetbrains.annotations.Nullable;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.commands.categories.fun.RedditCommand;
+import me.ix.noskillv2.commands.categories.misc.HelpCommand;
 import me.ix.noskillv2.commands.categories.misc.SayCommand;
-import me.ix.noskillv2.commands.categories.mod.BackupCommand;
-import me.ix.noskillv2.commands.categories.mod.BanCommand;
 import me.ix.noskillv2.commands.categories.mod.CleanCommand;
-import me.ix.noskillv2.commands.categories.mod.KickCommand;
 import me.ix.noskillv2.commands.categories.mod.SetPrefixCommand;
-import me.ix.noskillv2.commands.categories.mod.ShutdownCommand;
-import me.ix.noskillv2.commands.categories.mod.UnbanCommand;
 import me.ix.noskillv2.commands.categories.music.ClearCommand;
 import me.ix.noskillv2.commands.categories.music.JoinCommand;
 import me.ix.noskillv2.commands.categories.music.LeaveCommand;
 import me.ix.noskillv2.commands.categories.music.NowPlayingCommand;
-import me.ix.noskillv2.commands.categories.music.PauseCommand;
 import me.ix.noskillv2.commands.categories.music.PlayCommand;
 import me.ix.noskillv2.commands.categories.music.QueueCommand;
 import me.ix.noskillv2.commands.categories.music.SkipCommand;
@@ -30,6 +25,7 @@ import me.ix.noskillv2.utils.database.repo.GuildRepo;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandManager {
 
@@ -43,7 +39,8 @@ public class CommandManager {
 
 		/* MISC */
 		addCommand(new SayCommand());
-
+		addCommand(new HelpCommand());
+		
 		/* MOD */
 		addCommand(new CleanCommand());
 		addCommand(new SetPrefixCommand());
@@ -129,18 +126,34 @@ public class CommandManager {
 
 				NoSkillv2.webServer.addCommandRow(event.getAuthor().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
 				
-				// Check for commands where loose arguments are used.
 				if(cmd.getName() == "play") {
 					cmd.execute(ctx, arguments);
-				} else {
-					if(cmd.getArguments() != null) {
-						if(arguments.size() != cmd.getArguments().size()) {
-							event.getMessage().reply("Incorrect arguments. Use `" + NoSkillv2.DEFAULT_PREFIX + "help " + cmd.getName() + "`").queue();
-							return;
-						}
-					}
-					cmd.execute(ctx, arguments);
+					return;
 				}
+				
+				if(cmd.getArguments() == null) {
+					cmd.execute(ctx, arguments);
+					return;
+				} 
+				
+				boolean shouldSkipCheck = false;
+				for(OptionData arg : cmd.getArguments()) {
+					if(!arg.isRequired()) {
+						shouldSkipCheck = true;
+					}
+				}
+				
+				if(shouldSkipCheck) {
+					cmd.execute(ctx, arguments);
+					return;
+				}
+				
+				if(arguments.size() != cmd.getArguments().size()) {
+					event.getMessage().reply("Incorrect arguments. Use `" + NoSkillv2.DEFAULT_PREFIX + "help " + cmd.getName() + "`").queue();
+					return;
+				}
+				
+				cmd.execute(ctx, arguments);
 			}
 		}
 	}

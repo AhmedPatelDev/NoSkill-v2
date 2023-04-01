@@ -6,8 +6,10 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.lavaplayer.GuildMusicManager;
 import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -21,8 +23,11 @@ public class LeaveCommand implements ICommand {
 		final Member self = ctx.getGuild().getSelfMember();
 		final GuildVoiceState selfVoiceState = self.getVoiceState();
 
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+    	
 		if (!selfVoiceState.inAudioChannel()) {
-			ctx.sendMessage("I need to be in a voice channel for this to work");
+	    	eb.addField("Leave Info", "I need to be in a voice channel for this to work", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
@@ -30,12 +35,14 @@ public class LeaveCommand implements ICommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inAudioChannel()) {
-			ctx.sendMessage("You need to be in a voice channel for this command to work");
+	    	eb.addField("Leave Info", "You need to be in a voice channel for this command to work", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
 		if (!memberVoiceState.getChannel().equals(selfVoiceState.getChannel())) {
-			ctx.sendMessage("You need to be in the same voice channel as me for this to work");
+	    	eb.addField("Leave Info", "You need to be in the same voice channel as me for this to work", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
@@ -50,7 +57,8 @@ public class LeaveCommand implements ICommand {
 
 		audioManager.closeAudioConnection();
 
-		ctx.sendMessage("I have left the voice channel");
+    	eb.addField("Leave Info", "I have left the voice channel", false);
+    	ctx.sendMessage("", eb.build());
 	}
 
 	@Override

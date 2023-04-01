@@ -6,6 +6,8 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import me.ix.noskillv2.utils.Utils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -20,8 +22,11 @@ public class JoinCommand implements ICommand {
 
 		final GuildVoiceState selfVoiceState = self.getVoiceState();
 
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+    	
 		if (selfVoiceState.inAudioChannel()) {
-			ctx.sendMessage("Bot is already in a voice channel");
+	    	eb.addField("Join Info", "Bot is already in a voice channel", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
@@ -29,7 +34,8 @@ public class JoinCommand implements ICommand {
 		final GuildVoiceState memberVoiceState = member.getVoiceState();
 
 		if (!memberVoiceState.inAudioChannel()) {
-			ctx.sendMessage("You need to be in a voice channel for this command to work");
+	    	eb.addField("Join Info", "You need to be in a voice channel for this command to work", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
@@ -37,7 +43,8 @@ public class JoinCommand implements ICommand {
 		final VoiceChannel memberChannel = (VoiceChannel) memberVoiceState.getChannel();
 
 		audioManager.openAudioConnection(memberChannel);
-		ctx.sendMessage("Connecting to `" + memberChannel.getName() + "`");
+    	eb.addField("Join Info", "Connecting to `" + memberChannel.getName() + "`", false);
+    	ctx.sendMessage("", eb.build());
 	}
 
 	@Override

@@ -23,12 +23,14 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class NoSkillv2 {
 
+	public static String BOT_NAME = "NoSkill[v2]";
 	public static String DEFAULT_PREFIX = "-";
 	public static final Map<Long, String> PREFIXES = new HashMap<>();
 	
-	private final ShardManager shardManager;
+	public static ShardManager shardManager;
 	private final ConfigManager configManager;
 	private final Connection sqlConnection;
+	private final Listener listener;
 	
 	public static NoSkillv2 bot;
 	
@@ -55,7 +57,7 @@ public class NoSkillv2 {
 
 		shardManager = builder.build();
 
-		Listener listener = new Listener();
+		listener = new Listener();
 		shardManager.addEventListener(listener);
 		
 		webServer = new WebServerWrapper(690, 1000);
@@ -75,6 +77,10 @@ public class NoSkillv2 {
 
 	public Connection getSqlConnection() {
 		return sqlConnection;
+	}
+	
+	public Listener getListener() {
+		return listener;
 	}
 	
 	public static void main(String[] args) {

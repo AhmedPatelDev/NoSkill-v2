@@ -14,6 +14,7 @@ public class SayCommand implements ICommand {
 
 	@Override
 	public void execute(CommandContext ctx, ArrayList<String> arguments) {
+		System.out.println("command executed");
 		ctx.sendMessage("You made me say: " + arguments.get(0));
 	}
 	

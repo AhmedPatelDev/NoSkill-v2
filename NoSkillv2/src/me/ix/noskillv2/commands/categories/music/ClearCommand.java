@@ -6,8 +6,10 @@ import java.util.List;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.lavaplayer.GuildMusicManager;
 import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -20,9 +22,12 @@ public class ClearCommand implements ICommand {
 		final TextChannel channel = (TextChannel) ctx.getChannel();
         final Member self = ctx.getGuild().getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
-
+        
+        EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+    	
         if (!selfVoiceState.inAudioChannel()) {
-            channel.sendMessage("I need to be in a voice channel for this to work").queue();
+        	eb.addField("Clear Info", "I need to be in a voice channel for this to work", false);
+        	ctx.sendMessage("", eb.build());
             return;
         }
 
@@ -30,7 +35,8 @@ public class ClearCommand implements ICommand {
 
         musicManager.scheduler.queue.clear();
 
-        channel.sendMessage("The music queue has been cleared").queue();
+    	eb.addField("Clear Info", "The music queue has been cleared", false);
+    	ctx.sendMessage("", eb.build());
 	}
 
 	@Override

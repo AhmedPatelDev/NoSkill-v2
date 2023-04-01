@@ -10,8 +10,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import me.ix.noskillv2.commands.CommandCategory;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
+import me.ix.noskillv2.utils.Utils;
 import me.ix.noskillv2.utils.lavaplayer.GuildMusicManager;
 import me.ix.noskillv2.utils.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -23,8 +25,11 @@ public class QueueCommand implements ICommand {
 		final Member self = ctx.getGuild().getSelfMember();
 		final GuildVoiceState selfVoiceState = self.getVoiceState();
 
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+		
 		if (!selfVoiceState.inAudioChannel()) {
-			ctx.sendMessage("I need to be in a voice channel for this to work");
+	    	eb.addField("Queue Info", "I need to be in a voice channel for this to work", false);
+	    	ctx.sendMessage("", eb.build());
 			return;
 		}
 
@@ -42,7 +47,8 @@ public class QueueCommand implements ICommand {
 			count++;
 		}
 
-		ctx.sendMessage(toPrint);
+    	eb.addField("Queue Info", toPrint, false);
+    	ctx.sendMessage("", eb.build());
 	}
 
 	@Override

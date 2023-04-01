@@ -3,6 +3,7 @@ package me.ix.noskillv2.utils.webserver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ import me.ix.noskillv2.NoSkillv2;
 
 public class WebServerWrapper {
     private WebServer server;
-
-    private String title = "";
-    private String logo = "";
+    
     private String time = "";
 
     private ArrayList<String> commandRows;
@@ -29,9 +28,6 @@ public class WebServerWrapper {
         server = new WebServer(port, delay);
         server.setCustomCSS("body { font-family: 'Roboto', sans-serif; margin: 0; padding:0; background-color: #292929; }");
 
-        this.title = " NoSkillv2 Web Server | " + java.net.InetAddress.getLocalHost().getHostAddress() + " -> " + System.getProperty("user.name");
-        this.logo = getBase64Logo();
-
         this.commandRows = new ArrayList<String>();
         this.infoRows = new ArrayList<String>();
         
@@ -40,7 +36,13 @@ public class WebServerWrapper {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             clearInfoRows();
         	this.setTime(getCurSystemTime());
-            addInfoRow(commandRows.size() + " Commands Executed");
+        	
+        	long totalGuilds = NoSkillv2.shardManager.getGuildCache().size();
+        	int totalCommands = commandRows.size();
+        	
+            addInfoRow("Active in " + totalGuilds + " Guilds");
+            addInfoRow(totalCommands + " Commands Executed");
+            
             refresh();
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -80,9 +82,9 @@ public class WebServerWrapper {
     }
     
     public String getInfoRowContent() {
-        ArrayList<String> reversedRows = new ArrayList<>(infoRows);
+        ArrayList<String> rows = new ArrayList<>(infoRows);
         String output = "";
-        for(String row : reversedRows) {
+        for(String row : rows) {
             output += "<h3 style=\"color: white;\"><span style=\"color: orange;\">" + row + "</span><br /><span id=\"row1\"></span></h3>";
         }
         return output;
@@ -93,20 +95,20 @@ public class WebServerWrapper {
     }
 
     public void addInfoRow(String content) {
-    	infoRows.add("<span style=\"color: white;\">" + content + "</span>");
+    	infoRows.add(content);
     	this.refresh();
     }
     
     private String getContent() {
-        String logo = getBase64Logo();
-        String title = "NoSkill v2 WebServer";
-
-        String formatted = getHTML()
-                .replace("{logosrc}", this.logo)
-                .replace("{title}", this.title)
-                .replace("{time}", this.time)
-                .replace("{commandsRows}", getCommandRowContent())
-                .replace("{infoRows}", getInfoRowContent());
+        String formatted = "";
+		try {
+			formatted = getHTML()
+			        .replace("{logosrc}", getBase64Logo())
+			        .replace("{title}", NoSkillv2.BOT_NAME + " Web Server | " + java.net.InetAddress.getLocalHost().getHostAddress() + " -> " + System.getProperty("user.name"))
+			        .replace("{time}", this.time)
+			        .replace("{commandsRows}", getCommandRowContent())
+			        .replace("{infoRows}", getInfoRowContent());
+		} catch (UnknownHostException e) { }
 
         return formatted;
     }
@@ -136,10 +138,6 @@ public class WebServerWrapper {
         }
 
         return "";
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setTime(String time) {
