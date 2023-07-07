@@ -40,49 +40,53 @@ public class PlayerManager {
     }
 
     public void loadAndPlay(TextChannel channel, String trackUrl) {
-        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
-        
-        this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
-            @Override
-            public void trackLoaded(AudioTrack track) {
-                musicManager.scheduler.queue(track);
+        try {
+        	final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+            
+            this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+                @Override
+                public void trackLoaded(AudioTrack track) {
+                    musicManager.scheduler.queue(track);
 
-                String msg = "Adding to queue: `"
+                    String msg = "Adding to queue: `"
+                    			+ track.getInfo().title
+                    			+ "` by `"
+                    			+ track.getInfo().author
+                    			+ '`';
+                    
+                    channel.sendMessage(msg).queue();
+                }
+
+                @Override
+                public void playlistLoaded(AudioPlaylist playlist) {
+                	final List<AudioTrack> tracks = playlist.getTracks();
+
+                	AudioTrack track = tracks.get(0);
+                	
+                	String msg = "Adding to queue: `"
                 			+ track.getInfo().title
                 			+ "` by `"
                 			+ track.getInfo().author
                 			+ '`';
-                
-                channel.sendMessage(msg).queue();
-            }
+                	
+                	channel.sendMessage(msg).queue();
+                	
+                	musicManager.scheduler.queue(track);
+                }
 
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-            	final List<AudioTrack> tracks = playlist.getTracks();
+                @Override
+                public void noMatches() {
+                	channel.sendMessage("Could not find specified song. Try using a link").queue();
+                }
 
-            	AudioTrack track = tracks.get(0);
-            	
-            	String msg = "Adding to queue: `"
-            			+ track.getInfo().title
-            			+ "` by `"
-            			+ track.getInfo().author
-            			+ '`';
-            	
-            	channel.sendMessage(msg).queue();
-            	
-            	musicManager.scheduler.queue(track);
-            }
-
-            @Override
-            public void noMatches() {
-            	channel.sendMessage("Could not find specified song. Try using a link").queue();
-            }
-
-            @Override
-            public void loadFailed(FriendlyException exception) {
-            	channel.sendMessage("Loading failed! Try using a link").queue();
-            }
-        });
+                @Override
+                public void loadFailed(FriendlyException exception) {
+                	channel.sendMessage("Loading failed! Try using a link").queue();
+                }
+            });
+        } catch (Exception e) {
+        	channel.sendMessage("Exception occurred.");
+        }
     }
     
     public void play(Guild guild, String trackUrl) {

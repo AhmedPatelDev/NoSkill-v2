@@ -23,7 +23,7 @@ public class LeaveCommand implements ICommand {
 		final Member self = ctx.getGuild().getSelfMember();
 		final GuildVoiceState selfVoiceState = self.getVoiceState();
 
-		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, true);
     	
 		if (!selfVoiceState.inAudioChannel()) {
 	    	eb.addField("Leave Info", "I need to be in a voice channel for this to work", false);

@@ -38,4 +38,21 @@ public class InitializeTables {
 		}
 	}
 
+	public static void setupValorantAccountsTable(Connection connection) {
+		try (final Statement statement = connection.createStatement()) {
+			String tableStatement = createTableString("valorant_accounts", new String[] {
+				"id PRIMARY KEY",
+				"username VARCHAR(255)",
+				"password VARCHAR(255)"
+			});
+			statement.execute(tableStatement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setupTables(Connection connection) {
+		setupPrefixTable(connection);
+		setupValorantAccountsTable(connection);
+	}
 }

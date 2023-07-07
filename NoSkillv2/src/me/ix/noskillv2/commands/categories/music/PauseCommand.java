@@ -27,7 +27,7 @@ public class PauseCommand implements ICommand {
         final Member member = ctx.getMember();
         final GuildVoiceState memberVoiceState = member.getVoiceState();
         
-        EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+        EmbedBuilder eb = Utils.getDefaultEmbed(this, true);
         
         if (!selfVoiceState.inAudioChannel()) {
         	eb.addField("Pause Info", "I need to be in a voice channel for this to work", false);

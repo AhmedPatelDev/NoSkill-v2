@@ -22,7 +22,7 @@ public class JoinCommand implements ICommand {
 
 		final GuildVoiceState selfVoiceState = self.getVoiceState();
 
-		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, true);
     	
 		if (selfVoiceState.inAudioChannel()) {
 	    	eb.addField("Join Info", "Bot is already in a voice channel", false);

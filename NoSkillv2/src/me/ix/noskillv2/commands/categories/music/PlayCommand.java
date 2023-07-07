@@ -30,7 +30,7 @@ public class PlayCommand implements ICommand {
         final AudioPlayer audioPlayer = musicManager.audioPlayer;
         final AudioTrack track = audioPlayer.getPlayingTrack();
         
-        EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+        EmbedBuilder eb = Utils.getDefaultEmbed(this, true);
         
         String link = String.join(" ", arguments);
         

@@ -18,7 +18,7 @@ public class StopCommand implements ICommand {
 
 	@Override
 	public void execute(CommandContext ctx, ArrayList<String> arguments) {
-		EmbedBuilder eb = Utils.getDefaultEmbed(this, false);
+		EmbedBuilder eb = Utils.getDefaultEmbed(this, true);
 		
         final Member self = ctx.getGuild().getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();

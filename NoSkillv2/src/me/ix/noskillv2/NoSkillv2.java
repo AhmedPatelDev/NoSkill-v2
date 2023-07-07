@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
 
@@ -24,7 +26,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 public class NoSkillv2 {
 
 	public static String BOT_NAME = "NoSkill[v2]";
-	public static String DEFAULT_PREFIX = "-";
+	public static String DEFAULT_PREFIX = "!";
 	public static final Map<Long, String> PREFIXES = new HashMap<>();
 	
 	public static ShardManager shardManager;
@@ -36,14 +38,15 @@ public class NoSkillv2 {
 	
 	public static WebServerWrapper webServer;
 	
+	static int status = 0;
+	
 	public NoSkillv2() throws LoginException, SQLException, IOException {
 		configManager = new ConfigManager();
 		String token = configManager.getValueFromConfig("TOKEN");
 
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
 		builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
-		builder.setActivity(Activity.watching("in development."));
-
+		
 		for (GatewayIntent intent : GatewayIntent.values()) {
 			builder.enableIntents(intent);
 		}
@@ -60,13 +63,36 @@ public class NoSkillv2 {
 		listener = new Listener();
 		shardManager.addEventListener(listener);
 		
-		webServer = new WebServerWrapper(690, 1000);
+		//webServer = new WebServerWrapper(690, 1000);
 		
 		SQLiteDataSource ds = new SQLiteDataSource();
 		sqlConnection = ds.getConnection();
-		InitializeTables.setupPrefixTable(sqlConnection);
+		InitializeTables.setupTables(sqlConnection);
+		
+		ScheduledActivityChange(shardManager, listener, 5);
 	}
 
+	public void ScheduledActivityChange(ShardManager shrdmngr, Listener lsnr, int seconds) {
+		Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+			switch(status) {
+				case 0:
+					shardManager.setActivity(Activity.playing("in development"));
+					status = 1;
+					break;
+				case 1:
+					shardManager.setActivity(Activity.watching(shrdmngr.getGuildCache().size() + " servers"));
+					status = 2;
+					break;
+				case 2:
+					shardManager.setActivity(Activity.listening(lsnr.getManager().getCommands().size() + " commands"));
+					status = 0;
+					break;
+				default:
+					break;
+			}
+        }, 0, seconds, TimeUnit.SECONDS);
+	}
+	
 	public ShardManager getShardManager() {
 		return shardManager;
 	}

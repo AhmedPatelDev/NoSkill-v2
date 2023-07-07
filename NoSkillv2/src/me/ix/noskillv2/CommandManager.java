@@ -8,8 +8,11 @@ import org.jetbrains.annotations.Nullable;
 import me.ix.noskillv2.commands.CommandContext;
 import me.ix.noskillv2.commands.ICommand;
 import me.ix.noskillv2.commands.categories.fun.RedditCommand;
+import me.ix.noskillv2.commands.categories.game.ValorantStoreCommand;
+import me.ix.noskillv2.commands.categories.misc.DefineCommand;
 import me.ix.noskillv2.commands.categories.misc.HelpCommand;
 import me.ix.noskillv2.commands.categories.misc.SayCommand;
+import me.ix.noskillv2.commands.categories.misc.TranslateCommand;
 import me.ix.noskillv2.commands.categories.mod.CleanCommand;
 import me.ix.noskillv2.commands.categories.mod.SetPrefixCommand;
 import me.ix.noskillv2.commands.categories.music.ClearCommand;
@@ -33,20 +36,24 @@ public class CommandManager {
 	
 	public CommandManager() {
 		/* FUN */
+		//addCommand(new AnimeAICommand());
 		addCommand(new RedditCommand());
 
 		/* GAME */
-
+		addCommand(new ValorantStoreCommand());
+		
 		/* MISC */
-		addCommand(new SayCommand());
+		addCommand(new DefineCommand());
 		addCommand(new HelpCommand());
+		addCommand(new SayCommand());
+		addCommand(new TranslateCommand());
 		
 		/* MOD */
-		addCommand(new CleanCommand());
-		addCommand(new SetPrefixCommand());
 		//addCommand(new BackupCommand());
 		//addCommand(new BanCommand());
+		addCommand(new CleanCommand());
 		//addCommand(new KickCommand());
+		addCommand(new SetPrefixCommand());
 		//addCommand(new ShutdownCommand());
 		//addCommand(new UnbanCommand());
 		
@@ -59,7 +66,6 @@ public class CommandManager {
 		addCommand(new QueueCommand());
 		addCommand(new SkipCommand());
 		addCommand(new StopCommand());
-		//addCommand(new PauseCommand()); (removed due to complications with required args)
 	}
 
 	@SuppressWarnings("unused")
@@ -101,7 +107,9 @@ public class CommandManager {
 
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				NoSkillv2.webServer.addCommandRow(event.getUser().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
+				if(NoSkillv2.webServer != null) {
+					NoSkillv2.webServer.addCommandRow(event.getUser().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
+				}
 				
 				CommandContext ctx = new CommandContext(event);
 				
@@ -124,7 +132,9 @@ public class CommandManager {
 				
 				ArrayList<String> arguments = Utils.getArgumentsFromEvent(event);
 
-				NoSkillv2.webServer.addCommandRow(event.getAuthor().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
+				if(NoSkillv2.webServer != null) {
+					NoSkillv2.webServer.addCommandRow(event.getAuthor().getAsTag(), cmd.getName(), arguments.toString(), event.getGuild().getName());
+				}
 				
 				if(cmd.getName() == "play") {
 					cmd.execute(ctx, arguments);
