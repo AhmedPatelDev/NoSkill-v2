@@ -26,15 +26,17 @@ public class Store {
 
         JSONParser parser = new JSONParser();
         JSONObject obj = (JSONObject) parser.parse(StoreFront.toString());
-
+        
+        // Weapons
         JSONObject skinsPanelLayout = (JSONObject) obj.get("SkinsPanelLayout");
         timeUntilWeaponReset = (long) skinsPanelLayout.get("SingleItemOffersRemainingDurationInSeconds");
-        JSONArray singleItemOffers = (JSONArray) skinsPanelLayout.get("SingleItemOffers");
-        for(Object item : singleItemOffers) {
-            Weapon tempWeapon = new Weapon(item.toString());
+        JSONArray singleItemStoreOffers = (JSONArray) skinsPanelLayout.get("SingleItemStoreOffers");
+        for(Object item : singleItemStoreOffers) {
+            Weapon tempWeapon = new Weapon(item);
             storeWeapons.add(tempWeapon);
         }
-
+        
+        // Accessories
         JSONObject accessoryStore = (JSONObject) obj.get("AccessoryStore");
         timeUntilAccessoryReset = (long) accessoryStore.get("AccessoryStoreRemainingDurationInSeconds");
         JSONArray accessoryStoreOffers = (JSONArray) accessoryStore.get("AccessoryStoreOffers");
@@ -42,6 +44,7 @@ public class Store {
             Accessory tempAccessory = new Accessory(item);
             storeAccessories.add(tempAccessory);
         }
+        
     }
 
     private static JsonObject getStoreFront(Player player) throws IOException, ParseException {

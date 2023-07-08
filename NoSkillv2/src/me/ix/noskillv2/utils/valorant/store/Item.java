@@ -4,7 +4,8 @@ public class Item {
 
     public String name;
     public String imageURL;
-
+    public long price;
+    
     public Item() {}
 
     public String getName() {
@@ -14,4 +15,8 @@ public class Item {
     public String getImageURL() {
         return imageURL;
     }
+    
+    public long getPrice() {
+		return price;
+	}
 }

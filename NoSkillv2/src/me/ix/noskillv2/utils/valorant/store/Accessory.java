@@ -34,7 +34,9 @@ public class Accessory extends Item {
             JSONParser parser = new JSONParser();
             JSONObject objTest = (JSONObject) parser.parse(result);
             JSONObject data = (JSONObject) objTest.get("data");
-
+            
+            price = (long) ((JSONObject) offer.get("Cost")).get("85ca954a-41f2-ce94-9b45-8ca3dd39a00d");
+            
             name = data.get("displayName").toString();
 
             if(itemType.equals("playertitles")) {
