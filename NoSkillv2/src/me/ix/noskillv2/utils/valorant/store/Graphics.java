@@ -197,7 +197,7 @@ public class Graphics {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setColor(invertColor(getPixelColor(border, 887, 43)));
-        g2d.setFont(new Font("Courier New", Font.BOLD, 17));
+        g2d.setFont(new Font("Courier New", Font.BOLD, 16));
 
         drawStringWithDropShadow(g2d, convertSeconds(resetTime), 879, 45);
 
@@ -223,9 +223,9 @@ public class Graphics {
             int x = startOfGrid + squareIndex * (squareWidth + spaceBetweenGrid); // Calculate x-coordinate
 
             g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("consolas", Font.BOLD, 23));
+            g2d.setFont(new Font("Courier New", Font.BOLD, 23));
 
-            drawStringWithDropShadow(g2d, trunc(name.toUpperCase(), 26), x + (squareWidth / 2) - (g2d.getFontMetrics().stringWidth(trunc(name, 26)) / 2), 253);
+            drawStringWithDropShadow(g2d, trunc(name.toUpperCase(), 23), x + (squareWidth / 2) - (g2d.getFontMetrics().stringWidth(trunc(name.toUpperCase(), 23)) / 2), 253);
 
             g2d.drawImage(resizedImage, x + (squareWidth / 2) - (resizedImage.getWidth() / 2), 100, null);
 
